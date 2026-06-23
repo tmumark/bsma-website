@@ -39,7 +39,7 @@ window.SITE_CONFIG = {
     url:           "ap16.ragic.com/PicturesTest2026/-/5",  // 嵌入碼中的 ragic_url
     feature:       "query",   // query = 查詢介面（建議）
     exactMatch:    true,      // 精確比對（保護個資，建議 true）
-    showSheetName: true       // 是否顯示表單名稱
+    showSheetName: false      // 是否顯示表單名稱（建議關閉，避免露出後台表單命名）
   },
 
   /* ---------------------------------------------------------

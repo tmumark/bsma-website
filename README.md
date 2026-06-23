@@ -74,7 +74,7 @@ ragic: {
   url: "ap16.ragic.com/PicturesTest2026/-/5",
   feature: "query",
   exactMatch: true,
-  showSheetName: true
+  showSheetName: false
 }
 ```
 

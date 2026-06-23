@@ -53,7 +53,7 @@ ragic: {
   url:        "ap16.ragic.com/你的帳號/-/編號",  // 嵌入碼中的 ragic_url
   feature:    "query",
   exactMatch: true,
-  showSheetName: true
+  showSheetName: false
 },
 ```
 
