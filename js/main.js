@@ -4,13 +4,17 @@
    <div id="site-footer"></div>，並在 <body> 加 data-page="xxx"
    ========================================================= */
 (function () {
+  if (/\/index(?:\.html)?$/.test(window.location.pathname)) {
+    window.history.replaceState(null, "", window.location.pathname.replace(/\/index(?:\.html)?$/, "/") + window.location.search + window.location.hash);
+  }
+
   var cfg = window.SITE_CONFIG || {};
   var page = document.body.getAttribute("data-page") || "";
 
   var LOGO = '<img class="logo logo-img" src="assets/logo-bsma.jpg" alt="' + (cfg.orgName || "建築物安全管理協會") + '">';
 
   var NAV = [
-    { id: "home",    label: "首頁",       href: "index.html" },
+    { id: "home",    label: "首頁",       href: "./" },
     { id: "about",   label: "關於本會",   href: "about.html" },
     { id: "news",    label: "最新消息",   href: "news.html" },
     { id: "notice",  label: "公告訊息",   href: "announcements.html" },
@@ -37,7 +41,7 @@
         '</div>' +
       '</div></div>' +
       '<header class="site-header"><div class="container header-inner">' +
-        '<a class="brand" href="index.html">' + LOGO + '</a>' +
+        '<a class="brand" href="./">' + LOGO + '</a>' +
         '<button class="nav-toggle" aria-label="選單">' +
           '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18" stroke-linecap="round"/></svg>' +
         '</button>' +
