@@ -14,7 +14,7 @@
     { id: "about",   label: "關於本會",   href: "about.html" },
     { id: "news",    label: "最新消息",   href: "news.html" },
     { id: "notice",  label: "公告訊息",   href: "announcements.html" },
-    { id: "search",  label: "會友查詢", href: "search.html" },
+    { id: "search",  label: "案件查詢", href: "search.html" },
     { id: "contact", label: "聯絡我們",   href: "contact.html" }
   ];
 
@@ -32,7 +32,7 @@
           '<span>信箱：' + (cfg.contact ? cfg.contact.email : "") + '</span>' +
         '</div>' +
         '<div class="tb-right">' +
-          '<a href="search.html">會友及案件查詢</a>' +
+          '<a href="search.html">案件查詢</a>' +
           '<a href="contact.html">聯絡我們</a>' +
         '</div>' +
       '</div></div>' +
@@ -56,7 +56,7 @@
       '<div class="footer-cols">' +
         '<div>' +
           '<div class="foot-brand">' + LOGO + '</div>' +
-          '<p>本會為依法設立、非以營利為目的之社會團體，提供建築物公共安全檢查申報、法令資訊、教育訓練、公益宣導與會友服務資訊。</p>' +
+          '<p>本會為依法設立、非以營利為目的之社會團體，提供建築物公共安全檢查申報、法令資訊、教育訓練、公益宣導與申報服務資訊。</p>' +
         '</div>' +
         '<div>' +
           '<h4>快速連結</h4>' +

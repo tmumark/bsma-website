@@ -10,7 +10,7 @@ window.SITE_CONFIG = {
 
   /* 聯絡資訊 */
   contact: {
-    address: "台北市信義區基隆路二段33號 4F-3",
+    address: "台北市大同區長安西路62號8樓",
     phone:   "02-2737-3900",
     fax:     "02-2737-3901",
     email:   "service@example.org.tw",
@@ -29,7 +29,7 @@ window.SITE_CONFIG = {
   apiUrl: "",
 
   /* ---------------------------------------------------------
-     Ragic 會友及案件查詢嵌入設定（search.html 使用）
+     Ragic 案件查詢嵌入設定（search.html 使用）
      --------------------------------------------------------
      在 Ragic 表單按「工具 → 在你的網站嵌入此表單」，Ragic 會給一段
      嵌入碼，把碼中的 ragic_url / ragic_feature / exactMatch 填到這裡。

@@ -52,7 +52,7 @@
 ├─ about.html              關於本會、組織分工、查核流程
 ├─ news.html               最新消息
 ├─ announcements.html      公告訊息與附件下載
-├─ search.html             會友及案件查詢（RAGIC 正式頁）
+├─ search.html             案件查詢（RAGIC 正式頁）
 ├─ search-sheet.html       舊展示版，可保留備用
 ├─ contact.html            聯絡我們
 ├─ 網站公告_RAGIC匯入範本.csv  匯入 RAGIC 用的公告欄位範本
