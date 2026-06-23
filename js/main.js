@@ -7,13 +7,7 @@
   var cfg = window.SITE_CONFIG || {};
   var page = document.body.getAttribute("data-page") || "";
 
-  /* 共用建築/盾牌 Logo（SVG，免外部圖檔） */
-  var LOGO = '<svg class="logo" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">' +
-    '<path d="M32 4 6 14v16c0 16 11 27 26 30 15-3 26-14 26-30V14L32 4z" fill="currentColor" opacity=".12"/>' +
-    '<path d="M32 4 6 14v16c0 16 11 27 26 30 15-3 26-14 26-30V14L32 4z" stroke="currentColor" stroke-width="2.5" fill="none"/>' +
-    '<path d="M20 44V26l12-8 12 8v18" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/>' +
-    '<path d="M26 44V32h12v12M32 18v6M14 44h36" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>' +
-    '</svg>';
+  var LOGO = '<img class="logo logo-img" src="assets/logo-bsma.jpg" alt="' + (cfg.orgName || "建築物安全管理協會") + '">';
 
   var NAV = [
     { id: "home",    label: "首頁",       href: "index.html" },
@@ -43,12 +37,7 @@
         '</div>' +
       '</div></div>' +
       '<header class="site-header"><div class="container header-inner">' +
-        '<a class="brand" href="index.html">' + LOGO +
-          '<span class="brand-text">' +
-            '<strong>' + (cfg.orgName || "建築物公共安全協會") + '</strong>' +
-            '<small>' + (cfg.orgNameEn || "") + '</small>' +
-          '</span>' +
-        '</a>' +
+        '<a class="brand" href="index.html">' + LOGO + '</a>' +
         '<button class="nav-toggle" aria-label="選單">' +
           '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18" stroke-linecap="round"/></svg>' +
         '</button>' +
@@ -66,8 +55,8 @@
     return '<footer class="site-footer"><div class="container">' +
       '<div class="footer-cols">' +
         '<div>' +
-          '<div class="foot-brand">' + LOGO + '<strong>' + (cfg.orgName || "") + '</strong></div>' +
-          '<p>本會為依法設立、非以營利為目的之社會團體，規劃辦理建築物公共安全檢查簽證及申報案件查核、進度查詢、法令諮詢、教育訓練與公益宣導服務。</p>' +
+          '<div class="foot-brand">' + LOGO + '</div>' +
+          '<p>本會為依法設立、非以營利為目的之社會團體，提供建築物公共安全檢查申報、法令資訊、教育訓練、公益宣導與會友服務資訊。</p>' +
         '</div>' +
         '<div>' +
           '<h4>快速連結</h4>' +
