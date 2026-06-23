@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>會友及案件查詢｜建築物安全管理協會</title>
+  <meta name="description" content="建築物安全管理協會會友及建築物公共安全檢查申報案件進度查詢，透過 RAGIC 嵌入介面提供即時查詢服務。" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700&display=swap" /></noscript>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body data-page="search">
+  <div id="site-header"></div>
+
+  <section class="page-banner">
+    <div class="container">
+      <div class="crumb"><a href="index.html">首頁</a> ／ 會友及案件查詢</div>
+      <h1>會友及案件查詢</h1>
+    </div>
+  </section>
+
+  <main class="section">
+    <div class="container">
+      <div id="modeBanner" class="notice info"></div>
+
+      <!-- Ragic 嵌入區 -->
+      <div class="ragic-embed" id="ragicEmbed">
+        <div id="ragic_webview"></div>
+      </div>
+
+      <div class="card" style="margin-top:28px;background:var(--blue-lighter)">
+        <h3 style="margin-top:0;color:var(--navy);font-size:17px">查詢說明</h3>
+        <ul style="margin:0;color:var(--text-soft);font-size:14.5px;padding-left:1.2em">
+          <li>本頁嵌入 RAGIC 查詢介面，資料由本會於案件管理平台維護。</li>
+          <li>請輸入<strong>完整的案件識別資料</strong>或本會指定查詢欄位，以保障案件當事人個資。</li>
+          <li>查詢結果之「目前進度」與「審查結果」以本會實際審查紀錄與資料更新時間為準。</li>
+          <li>如 RAGIC 畫面未顯示，請確認該表單已開放未登入者查詢權限，或洽本會服務人員。</li>
+        </ul>
+      </div>
+    </div>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script src="js/config.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    (function () {
+      var cfg = window.SITE_CONFIG || {};
+      var r = cfg.ragic || {};
+      var url = (r.url || "").trim();
+      var banner = document.getElementById("modeBanner");
+      var box = document.getElementById("ragicEmbed");
+
+      if (url) {
+        banner.className = "notice info";
+        banner.innerHTML =
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01" stroke-linecap="round"/></svg>' +
+          '<div>本查詢介面由本會案件資料庫（Ragic）即時提供。</div>';
+
+        /* 設定 Ragic 嵌入所需的全域變數（等同官方嵌入碼） */
+        window.ragic_url        = url;
+        window.ragic_feature    = r.feature || "query";
+        window.ragic_embedtype  = "";
+        window.exactMatch       = (r.exactMatch !== false);
+        window.pfv              = [];
+        window.applyDefaultView = false;
+        window.showSheetName    = (r.showSheetName !== false);
+
+        /* 載入 Ragic 嵌入腳本（依 url 自動取得伺服器主機，如 ap16.ragic.com） */
+        var host = url.split("/")[0];
+        var rq = document.createElement("script");
+        rq.type = "text/javascript";
+        rq.async = true;
+        rq.src = "https://" + host + "/intl/common/load.js";
+        (document.getElementsByTagName("head")[0] || document.body).appendChild(rq);
+      } else {
+        banner.className = "notice demo";
+        banner.innerHTML =
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>' +
+          '<div><strong>尚未設定 Ragic：</strong>請把 Ragic 嵌入碼中的 <code>ragic_url</code> 填到 <code>js/config.js</code> 的 <code>ragic.url</code>。' +
+          '想先看查詢長相，可開 <a href="search-sheet.html">展示版（範例資料）</a>。</div>';
+        box.classList.remove("ragic-embed");
+        box.innerHTML =
+          '<div class="state-box" style="text-align:left;padding:32px 28px">' +
+          '<h3 style="text-align:center">連接 Ragic — 設定步驟</h3>' +
+          '<ol style="color:var(--text-soft);font-size:14.5px;line-height:2;max-width:680px;margin:14px auto 0">' +
+          '<li>到 <a href="https://www.ragic.com/intl/zh-TW" target="_blank" rel="noopener">ragic.com</a> 註冊，建一張「案件」表單（可匯入專案內 <code>案件範例匯入.csv</code>）。</li>' +
+          '<li>把「姓名／電話」等個資欄位設為<strong>內部欄位</strong>（不對外顯示）。</li>' +
+          '<li>表單按<strong>「工具 → 在你的網站嵌入此表單」</strong>，元件選「資料庫查詢瀏覽（Query）」，開啟<strong>精確比對（Exact Mode）</strong>。</li>' +
+          '<li>把嵌入碼中的 <code>ragic_url</code> 值貼到 <code>js/config.js</code> 的 <code>ragic.url</code>。</li>' +
+          '<li>存檔重整本頁即生效。完整教學見 <a href="README-Ragic.md">README-Ragic.md</a>。</li>' +
+          '</ol></div>';
+      }
+    })();
+  </script>
+</body>
+</html>
