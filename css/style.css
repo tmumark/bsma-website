@@ -96,10 +96,12 @@ img { max-width: 100%; display: block; }
   color: var(--navy);
 }
 .brand .logo-img {
-  width: 220px;
+  width: 300px;
   height: auto;
-  flex: 0 1 220px;
+  max-height: 54px;
+  flex: 0 1 300px;
   object-fit: contain;
+  object-position: left center;
 }
 .brand .brand-text strong {
   display: block;
@@ -168,7 +170,7 @@ img { max-width: 100%; display: block; }
   position: relative;
   background:
     linear-gradient(90deg, rgba(13,34,54,.96) 0%, rgba(23,52,79,.88) 100%),
-    url("../assets/logo-bsma.jpg") center / cover no-repeat;
+    url("../assets/logo-main.png") center / cover no-repeat;
   color: #fff;
   padding: 70px 0 78px;
   border-bottom: 4px solid var(--gold);
@@ -834,8 +836,9 @@ table.cases tbody tr:hover { background: var(--blue-light); }
 .foot-brand { display: flex; gap: 12px; align-items: center; margin-bottom: 14px; }
 .foot-brand .logo { width: 40px; height: 40px; color: #fff; }
 .foot-brand .logo-img {
-  width: 150px;
+  width: 260px;
   height: auto;
+  max-width: 100%;
   background: #fff;
   border-radius: 0;
 }
@@ -863,7 +866,7 @@ table.cases tbody tr:hover { background: var(--blue-light); }
   .topbar { display: none; }
   .header-inner { height: 68px; }
   .brand .brand-text strong { font-size: 18px; }
-  .brand .logo-img { width: 176px; flex-basis: 176px; }
+  .brand .logo-img { width: 190px; max-height: 36px; flex-basis: 190px; }
   .nav-toggle { display: block; }
   .main-nav {
     position: absolute; top: 68px; left: 0; right: 0;

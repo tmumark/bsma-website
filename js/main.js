@@ -11,7 +11,7 @@
   var cfg = window.SITE_CONFIG || {};
   var page = document.body.getAttribute("data-page") || "";
 
-  var LOGO = '<img class="logo logo-img" src="assets/logo-bsma.jpg" alt="' + (cfg.orgName || "建築物安全管理協會") + '">';
+  var LOGO = '<img class="logo logo-img" src="assets/logo-main.png?v=20260624-logo" alt="' + (cfg.orgName || "建築物安全管理協會") + '">';
 
   var NAV = [
     { id: "home",    label: "首頁",       href: "./" },
