@@ -13,7 +13,7 @@ window.SITE_CONFIG = {
     address: "台北市大同區長安西路62號8樓",
     phone:   "02-2737-3900",
     fax:     "02-2737-3901",
-    email:   "service@example.org.tw",
+    email:   "bsma@bsma.org.tw",
     hours:   "週一至週五 09:00–18:00（例假日休）"
   },
 
@@ -46,7 +46,7 @@ window.SITE_CONFIG = {
      網站公告 / 最新消息 / 法令訊息資料來源
      --------------------------------------------------------
      建議在 Ragic 另建一張「網站公告」表，欄位名稱使用：
-     日期、區塊、類別、標題、摘要、連結、置頂、顯示、排序
+     日期、區塊、類別、標題、摘要、連結、附件、置頂、顯示、排序
 
      url 留空字串("")時，網站會使用 HTML 內原本的備用內容。
      取得表單網址後，把嵌入碼中的 ragic_url 填到 url 即可。
@@ -61,6 +61,7 @@ window.SITE_CONFIG = {
       title:   "標題",
       summary: "摘要",
       url:     "連結",
+      attachment: "附件",
       pinned:  "置頂",
       visible: "顯示",
       order:   "排序"

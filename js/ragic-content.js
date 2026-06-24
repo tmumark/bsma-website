@@ -17,6 +17,7 @@
     title: fields.title || "標題",
     summary: fields.summary || "摘要",
     url: fields.url || "連結",
+    attachment: fields.attachment || "附件",
     pinned: fields.pinned || "置頂",
     visible: fields.visible || "顯示",
     order: fields.order || "排序"
@@ -36,9 +37,62 @@
 
   function normalizeUrl(url) {
     if (!url) return "";
+    url = String(url).trim();
     if (/^https?:\/\//i.test(url)) return url;
+    if (/^\/\//.test(url)) return "https:" + url;
+    if (/^\//.test(url)) return getSourceOrigin() + url;
     if (/^mailto:|^tel:/i.test(url)) return url;
     return url;
+  }
+
+  function getSourceOrigin() {
+    var cleanUrl = /^https?:\/\//i.test(sourceUrl) ? sourceUrl : "https://" + sourceUrl;
+    var match = cleanUrl.match(/^https?:\/\/[^/]+/i);
+    return match ? match[0] : "";
+  }
+
+  function normalizeAttachment(raw) {
+    if (raw == null) return "";
+    if (Array.isArray(raw)) {
+      for (var i = 0; i < raw.length; i += 1) {
+        var fromArray = normalizeAttachment(raw[i]);
+        if (fromArray) return fromArray;
+      }
+      return "";
+    }
+    if (typeof raw === "object") {
+      var preferred = ["url", "href", "link", "downloadUrl", "download_url", "file", "path"];
+      for (var p = 0; p < preferred.length; p += 1) {
+        if (raw[preferred[p]]) {
+          var fromKey = normalizeAttachment(raw[preferred[p]]);
+          if (fromKey) return fromKey;
+        }
+      }
+      var keys = Object.keys(raw);
+      for (var k = 0; k < keys.length; k += 1) {
+        var fromObject = normalizeAttachment(raw[keys[k]]);
+        if (fromObject) return fromObject;
+      }
+      return "";
+    }
+
+    var text = String(raw).trim();
+    if (!text) return "";
+    try {
+      var parsed = JSON.parse(text);
+      var fromJson = normalizeAttachment(parsed);
+      if (fromJson) return fromJson;
+    } catch (e) {
+      /* 不是 JSON 時，繼續用文字解析。 */
+    }
+
+    var hrefMatch = text.match(/href=["']([^"']+)["']/i);
+    if (hrefMatch) return normalizeUrl(hrefMatch[1]);
+    var urlMatch = text.match(/https?:\/\/[^\s"'<>]+/i);
+    if (urlMatch) return normalizeUrl(urlMatch[0]);
+    var pathMatch = text.match(/\/[^\s"'<>]+/);
+    if (pathMatch) return normalizeUrl(pathMatch[0]);
+    return "";
   }
 
   function normalizeDate(text) {
@@ -55,6 +109,8 @@
   function getRowList(data) {
     return Object.keys(data || {}).map(function (key) {
       var row = data[key] || {};
+      var linkUrl = normalizeUrl(value(row, fieldNames.url));
+      var attachmentUrl = normalizeAttachment(row[fieldNames.attachment]);
       return {
         id: key,
         date: value(row, fieldNames.date),
@@ -62,7 +118,8 @@
         type: value(row, fieldNames.type),
         title: value(row, fieldNames.title) || value(row, "_index_title_"),
         summary: value(row, fieldNames.summary),
-        url: normalizeUrl(value(row, fieldNames.url)),
+        url: linkUrl || attachmentUrl,
+        hasAttachment: !linkUrl && !!attachmentUrl,
         pinned: isYes(value(row, fieldNames.pinned)),
         hidden: isHidden(value(row, fieldNames.visible)),
         order: parseInt(value(row, fieldNames.order), 10) || 9999,
@@ -185,7 +242,7 @@
       var linkCell = document.createElement("td");
       var link = document.createElement("a");
       link.href = item.url || "#";
-      link.textContent = item.url ? "開啟" : "待上傳";
+      link.textContent = item.url ? (item.hasAttachment ? "下載" : "開啟") : "待上傳";
       if (/^https?:\/\//i.test(item.url)) {
         link.target = "_blank";
         link.rel = "noopener";
@@ -214,4 +271,3 @@
       /* 保留 HTML 內的備用內容即可。 */
     });
 })();
-
