@@ -11,8 +11,8 @@ window.SITE_CONFIG = {
   /* 聯絡資訊 */
   contact: {
     address: "台北市大同區長安西路62號8樓",
-    phone:   "02-2737-3900",
-    fax:     "02-2737-3901",
+    phone:   "02-2559-1091",
+    fax:     "02-2558-6937",
     email:   "bsma@bsma.org.tw",
     hours:   "週一至週五 09:00–18:00（例假日休）"
   },
