@@ -16,6 +16,7 @@
     type: fields.type || "類別",
     title: fields.title || "標題",
     summary: fields.summary || "摘要",
+    content: fields.content || "內容",
     url: fields.url || "連結",
     attachment: fields.attachment || "附件",
     pinned: fields.pinned || "置頂",
@@ -49,6 +50,12 @@
     var cleanUrl = /^https?:\/\//i.test(sourceUrl) ? sourceUrl : "https://" + sourceUrl;
     var match = cleanUrl.match(/^https?:\/\/[^/]+/i);
     return match ? match[0] : "";
+  }
+
+  function buildDetailUrl(row, fallbackId) {
+    var id = value(row, "_ragicId") || fallbackId;
+    if (!id && id !== 0) return "";
+    return "announcement-detail.html?id=" + encodeURIComponent(id);
   }
 
   function normalizeAttachment(raw) {
@@ -111,6 +118,7 @@
       var row = data[key] || {};
       var linkUrl = normalizeUrl(value(row, fieldNames.url));
       var attachmentUrl = normalizeAttachment(row[fieldNames.attachment]);
+      var detailUrl = buildDetailUrl(row, key);
       return {
         id: key,
         date: value(row, fieldNames.date),
@@ -118,8 +126,10 @@
         type: value(row, fieldNames.type),
         title: value(row, fieldNames.title) || value(row, "_index_title_"),
         summary: value(row, fieldNames.summary),
-        url: linkUrl || attachmentUrl,
-        hasAttachment: !linkUrl && !!attachmentUrl,
+        detailUrl: detailUrl,
+        url: linkUrl,
+        actionUrl: attachmentUrl || detailUrl || linkUrl,
+        hasAttachment: !!attachmentUrl,
         pinned: isYes(value(row, fieldNames.pinned)),
         hidden: isHidden(value(row, fieldNames.visible)),
         order: parseInt(value(row, fieldNames.order), 10) || 9999,
@@ -192,9 +202,9 @@
     var li = document.createElement("li");
     li.appendChild(createText("span", "news-date", normalizeDate(item.date)));
     var link = document.createElement("a");
-    link.href = item.url || "#";
-    if (item.url) {
-      link.target = /^https?:\/\//i.test(item.url) ? "_blank" : "";
+    link.href = item.detailUrl || item.url || "#";
+    if (link.href && link.getAttribute("href") !== "#") {
+      link.target = /^https?:\/\//i.test(link.getAttribute("href")) ? "_blank" : "";
       if (link.target) link.rel = "noopener";
     }
     link.textContent = item.title;
@@ -238,12 +248,19 @@
       var badge = createText("span", "status s-pending", item.type || item.section);
       type.appendChild(badge);
       var title = document.createElement("td");
-      title.textContent = item.title;
+      var titleLink = document.createElement("a");
+      titleLink.href = item.detailUrl || item.url || "#";
+      titleLink.textContent = item.title;
+      if (/^https?:\/\//i.test(titleLink.getAttribute("href"))) {
+        titleLink.target = "_blank";
+        titleLink.rel = "noopener";
+      }
+      title.appendChild(titleLink);
       var linkCell = document.createElement("td");
       var link = document.createElement("a");
-      link.href = item.url || "#";
-      link.textContent = item.url ? (item.hasAttachment ? "下載" : "開啟") : "待上傳";
-      if (/^https?:\/\//i.test(item.url)) {
+      link.href = item.actionUrl || "#";
+      link.textContent = item.actionUrl ? (item.hasAttachment ? "下載" : "開啟") : "待上傳";
+      if (/^https?:\/\//i.test(item.actionUrl)) {
         link.target = "_blank";
         link.rel = "noopener";
       }

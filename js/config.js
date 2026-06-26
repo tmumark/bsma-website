@@ -60,6 +60,7 @@ window.SITE_CONFIG = {
       type:    "類別",
       title:   "標題",
       summary: "摘要",
+      content: "內容",
       url:     "連結",
       attachment: "附件",
       pinned:  "置頂",
