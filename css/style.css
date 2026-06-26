@@ -421,6 +421,11 @@ img { max-width: 100%; display: block; }
   border-bottom: 1px dashed var(--line);
 }
 .plain-news li:last-child { border-bottom: 0; }
+.plain-news li.news-empty {
+  display: block;
+  color: var(--text-soft);
+  padding: 18px 0;
+}
 .plain-news a {
   color: var(--text);
   font-weight: 600;
@@ -1202,6 +1207,11 @@ table.cases thead th {
   white-space: nowrap;
 }
 table.cases tbody td { padding: 13px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+table.cases tbody td.table-empty {
+  color: var(--text-soft);
+  text-align: center;
+  padding: 28px 14px;
+}
 table.cases tbody tr:nth-child(even) { background: var(--blue-lighter); }
 table.cases tbody tr:hover { background: var(--blue-light); }
 

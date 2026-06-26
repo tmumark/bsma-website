@@ -17,7 +17,6 @@
   var NAV = [
     { id: "home",    label: "首頁",       href: "./" },
     { id: "about",   label: "關於本會",   href: "about.html" },
-    { id: "news",    label: "最新消息",   href: "news.html" },
     { id: "notice",  label: "公告訊息",   href: "announcements.html" },
     { id: "search",  label: "案件查詢", href: "search.html" },
     { id: "contact", label: "聯絡我們",   href: "contact.html" }

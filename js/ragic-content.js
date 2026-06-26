@@ -1,5 +1,5 @@
 /* =========================================================
-   Ragic 公開內容串接：最新消息 / 公告 / 法令訊息
+   Ragic 公開內容串接：公告訊息 / 法令訊息 / 申報資訊
    - 不需要 API key，只讀公開表單資料
    - config.content.url 留空時，保留 HTML 內的備用內容
    ========================================================= */
@@ -236,8 +236,14 @@
       return matchesSection(row, sections, includePinned);
     });
     if (limit > 0) selected = selected.slice(0, limit);
-    if (!selected.length) return;
     el.innerHTML = "";
+    if (!selected.length) {
+      var empty = document.createElement("li");
+      empty.className = "news-empty";
+      empty.textContent = "目前暫無公告。";
+      el.appendChild(empty);
+      return;
+    }
     selected.forEach(function (item) {
       el.appendChild(createNewsItem(item));
     });
@@ -250,11 +256,19 @@
       return matchesSection(row, sections, false);
     });
     if (limit > 0) selected = selected.slice(0, limit);
-    if (!selected.length) return;
-
     var tbody = table.querySelector("tbody");
     if (!tbody) return;
     tbody.innerHTML = "";
+    if (!selected.length) {
+      var emptyRow = document.createElement("tr");
+      var emptyCell = document.createElement("td");
+      emptyCell.className = "table-empty";
+      emptyCell.colSpan = table.querySelectorAll("thead th").length || 4;
+      emptyCell.textContent = "目前暫無公告。";
+      emptyRow.appendChild(emptyCell);
+      tbody.appendChild(emptyRow);
+      return;
+    }
     selected.forEach(function (item) {
       var tr = document.createElement("tr");
       var date = document.createElement("td");
