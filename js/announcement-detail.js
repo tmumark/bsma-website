@@ -162,6 +162,167 @@
     return files;
   }
 
+  function escapeHtml(text) {
+    return String(text == null ? "" : text)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+  }
+
+  function escapeAttr(text) {
+    return escapeHtml(text).replace(/`/g, "&#96;");
+  }
+
+  function isSafeHref(url) {
+    var href = String(url || "").trim();
+    if (!href) return false;
+    if (/^\s*javascript:/i.test(href)) return false;
+    if (/^[a-z][a-z0-9+.-]*:/i.test(href)) return /^(https?:|mailto:|tel:)/i.test(href);
+    return true;
+  }
+
+  function renderInlineMarkdown(text) {
+    var html = escapeHtml(text);
+
+    html = html.replace(/`([^`]+)`/g, "<code>$1</code>");
+    html = html.replace(/\[([^\]]+)\]\(([^)\s]+)(?:\s+['"][^'"]*['"])?\)/g, function (_, label, href) {
+      var normalized = normalizeUrl(href.replace(/&amp;/g, "&"));
+      if (!isSafeHref(normalized)) return label;
+      var target = /^https?:\/\//i.test(normalized) ? ' target="_blank" rel="noopener"' : "";
+      return '<a href="' + escapeAttr(normalized) + '"' + target + ">" + label + "</a>";
+    });
+    html = html.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
+    html = html.replace(/__([^_]+)__/g, "<strong>$1</strong>");
+    html = html.replace(/(^|[^\*])\*([^*\n]+)\*(?!\*)/g, "$1<em>$2</em>");
+    html = html.replace(/(^|[^_])_([^_\n]+)_(?!_)/g, "$1<em>$2</em>");
+
+    return html;
+  }
+
+  function parseTableRow(line) {
+    var row = String(line || "").trim();
+    if (row.charAt(0) === "|") row = row.slice(1);
+    if (row.charAt(row.length - 1) === "|") row = row.slice(0, -1);
+    return row.split("|").map(function (cell) { return cell.trim(); });
+  }
+
+  function isTableDivider(line) {
+    return /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/.test(String(line || ""));
+  }
+
+  function isMarkdownBlockStart(line, nextLine) {
+    var text = String(line || "").trim();
+    if (!text) return false;
+    return /^```/.test(text) ||
+      /^(#{1,4})\s+/.test(text) ||
+      /^[-*_]{3,}$/.test(text) ||
+      /^>\s?/.test(text) ||
+      /^[-*+]\s+/.test(text) ||
+      /^\d+\.\s+/.test(text) ||
+      (text.indexOf("|") !== -1 && isTableDivider(nextLine));
+  }
+
+  function renderMarkdown(text) {
+    var lines = String(text || "").replace(/\r\n?/g, "\n").split("\n");
+    var html = [];
+
+    for (var i = 0; i < lines.length; i += 1) {
+      var line = lines[i];
+      var trimmed = line.trim();
+      var match;
+
+      if (!trimmed) continue;
+
+      if (/^```/.test(trimmed)) {
+        var codeLines = [];
+        i += 1;
+        while (i < lines.length && !/^```/.test(lines[i].trim())) {
+          codeLines.push(lines[i]);
+          i += 1;
+        }
+        html.push("<pre><code>" + escapeHtml(codeLines.join("\n")) + "</code></pre>");
+        continue;
+      }
+
+      match = trimmed.match(/^(#{1,4})\s+(.+)$/);
+      if (match) {
+        var level = Math.min(match[1].length + 2, 5);
+        html.push("<h" + level + ">" + renderInlineMarkdown(match[2]) + "</h" + level + ">");
+        continue;
+      }
+
+      if (/^[-*_]{3,}$/.test(trimmed)) {
+        html.push("<hr>");
+        continue;
+      }
+
+      if (/^>\s?/.test(trimmed)) {
+        var quotes = [];
+        while (i < lines.length && /^>\s?/.test(lines[i].trim())) {
+          quotes.push(lines[i].trim().replace(/^>\s?/, ""));
+          i += 1;
+        }
+        i -= 1;
+        html.push("<blockquote>" + quotes.map(renderInlineMarkdown).join("<br>") + "</blockquote>");
+        continue;
+      }
+
+      if (trimmed.indexOf("|") !== -1 && isTableDivider(lines[i + 1])) {
+        var headers = parseTableRow(trimmed);
+        var rows = [];
+        i += 2;
+        while (i < lines.length && lines[i].trim() && lines[i].indexOf("|") !== -1) {
+          rows.push(parseTableRow(lines[i]));
+          i += 1;
+        }
+        i -= 1;
+        html.push(
+          '<div class="md-table-wrap"><table><thead><tr>' +
+          headers.map(function (cell) { return "<th>" + renderInlineMarkdown(cell) + "</th>"; }).join("") +
+          "</tr></thead><tbody>" +
+          rows.map(function (rowCells) {
+            return "<tr>" + rowCells.map(function (cell) { return "<td>" + renderInlineMarkdown(cell) + "</td>"; }).join("") + "</tr>";
+          }).join("") +
+          "</tbody></table></div>"
+        );
+        continue;
+      }
+
+      if (/^[-*+]\s+/.test(trimmed)) {
+        var items = [];
+        while (i < lines.length && /^[-*+]\s+/.test(lines[i].trim())) {
+          items.push(lines[i].trim().replace(/^[-*+]\s+/, ""));
+          i += 1;
+        }
+        i -= 1;
+        html.push("<ul>" + items.map(function (item) { return "<li>" + renderInlineMarkdown(item) + "</li>"; }).join("") + "</ul>");
+        continue;
+      }
+
+      if (/^\d+\.\s+/.test(trimmed)) {
+        var numberItems = [];
+        while (i < lines.length && /^\d+\.\s+/.test(lines[i].trim())) {
+          numberItems.push(lines[i].trim().replace(/^\d+\.\s+/, ""));
+          i += 1;
+        }
+        i -= 1;
+        html.push("<ol>" + numberItems.map(function (item) { return "<li>" + renderInlineMarkdown(item) + "</li>"; }).join("") + "</ol>");
+        continue;
+      }
+
+      var paragraph = [trimmed];
+      while (i + 1 < lines.length && lines[i + 1].trim() && !isMarkdownBlockStart(lines[i + 1], lines[i + 2])) {
+        i += 1;
+        paragraph.push(lines[i].trim());
+      }
+      html.push("<p>" + renderInlineMarkdown(paragraph.join(" ")) + "</p>");
+    }
+
+    return html.join("");
+  }
+
   function jsonp(url) {
     return new Promise(function (resolve, reject) {
       var callbackName = "__bsmaAnnouncement" + Date.now() + Math.floor(Math.random() * 1000);
@@ -232,7 +393,7 @@
     container.appendChild(head);
 
     var body = createEl("div", "announcement-detail-body");
-    body.textContent = content || "本公告尚未填寫詳細內容。";
+    body.innerHTML = renderMarkdown(content || "本公告尚未填寫詳細內容。");
     container.appendChild(body);
 
     if (attachments.length) {
