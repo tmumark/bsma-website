@@ -12,7 +12,7 @@
   <link rel="icon" href="favicon.ico?v=20260624-logo" sizes="any" />
   <link rel="icon" type="image/png" href="assets/favicon.png?v=20260624-logo" />
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png?v=20260624-logo" />
-  <link rel="stylesheet" href="css/style.css?v=20260626-footer3" />
+  <link rel="stylesheet" href="css/style.css?v=20260626-search-polish" />
 </head>
 <body data-page="search">
   <div id="site-header"></div>
@@ -24,26 +24,64 @@
     </div>
   </section>
 
-  <main class="section">
+  <main class="section search-service-section">
     <div class="container">
-      <div id="modeBanner" class="notice info"></div>
+      <div class="search-service-intro">
+        <div>
+          <span class="service-kicker">線上查詢服務</span>
+          <h2>建築物公共安全申報案件查詢</h2>
+          <p>本頁連接本會案件資料庫，請依本會提供之查詢資料完整輸入，以精確比對方式查詢案件狀態。</p>
+        </div>
+        <dl class="service-facts" aria-label="查詢服務資訊">
+          <div>
+            <dt>資料來源</dt>
+            <dd>本會案件資料庫</dd>
+          </div>
+          <div>
+            <dt>查詢方式</dt>
+            <dd>完整條件比對</dd>
+          </div>
+          <div>
+            <dt>服務時間</dt>
+            <dd>線上查詢全天開放</dd>
+          </div>
+        </dl>
+      </div>
 
       <!-- 查詢嵌入區 -->
-      <div class="ragic-embed" id="ragicEmbed">
-        <div id="ragic_webview"></div>
-        <noscript>Please enable JavaScript to view the <a href="https://www.ragic.com/?ref_noscript">Online database form by Ragic.</a></noscript>
-        <a href="https://www.ragic.com" id="ragic-link">online database form by <span class="logo-ragic">Ragic</span></a>
-      </div>
+      <section class="search-query-shell" aria-label="案件查詢表單">
+        <div class="search-query-toolbar">
+          <div>
+            <span>案件資料庫</span>
+            <strong>Ragic 精確查詢</strong>
+          </div>
+          <div id="modeBanner" class="search-status"></div>
+        </div>
 
-      <div class="card" style="margin-top:28px;background:var(--blue-lighter)">
-        <h3 style="margin-top:0;color:var(--navy);font-size:17px">查詢說明</h3>
-        <ul style="margin:0;color:var(--text-soft);font-size:14.5px;padding-left:1.2em">
-          <li>本頁提供案件相關查詢服務，資料由本會案件資料庫維護。</li>
-          <li>請輸入<strong>完整的案件識別資料</strong>或本會指定查詢欄位，以保障案件當事人個資。</li>
-          <li>查詢結果之「目前進度」與「審查結果」以本會實際審查紀錄與資料更新時間為準。</li>
-          <li>如查詢畫面未顯示，請稍後再試，或於服務時間洽本會服務人員。</li>
-        </ul>
-      </div>
+        <div class="ragic-embed" id="ragicEmbed">
+          <div id="ragic_webview"></div>
+          <noscript>Please enable JavaScript to view the <a href="https://www.ragic.com/?ref_noscript">Online database form by Ragic.</a></noscript>
+          <a href="https://www.ragic.com" id="ragic-link">online database form by <span class="logo-ragic">Ragic</span></a>
+        </div>
+      </section>
+
+      <section class="search-guidance" aria-label="查詢說明">
+        <article>
+          <span>01</span>
+          <h3>完整填寫</h3>
+          <p>請輸入完整案件識別資料或本會指定查詢欄位，以保障案件當事人個資。</p>
+        </article>
+        <article>
+          <span>02</span>
+          <h3>資料依據</h3>
+          <p>查詢結果以本會實際案件紀錄與資料更新時間為準。</p>
+        </article>
+        <article>
+          <span>03</span>
+          <h3>協助服務</h3>
+          <p>若查詢畫面未顯示或資料無法比對，請於服務時間洽本會人員。</p>
+        </article>
+      </section>
     </div>
   </main>
 
@@ -60,10 +98,9 @@
       var box = document.getElementById("ragicEmbed");
 
       if (url) {
-        banner.className = "notice info";
+        banner.className = "search-status is-live";
         banner.innerHTML =
-          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01" stroke-linecap="round"/></svg>' +
-          '<div>本查詢介面由本會案件資料庫提供。</div>';
+          '<span aria-hidden="true"></span><strong>資料庫已連線</strong>';
 
         /* 設定 Ragic 嵌入所需的全域變數（等同官方嵌入碼） */
         window.ragic_url        = url;
@@ -82,10 +119,9 @@
         rq.src = "https://" + host + "/intl/common/load.js";
         (document.getElementsByTagName("head")[0] || document.body).appendChild(rq);
       } else {
-        banner.className = "notice demo";
+        banner.className = "search-status is-paused";
         banner.innerHTML =
-          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>' +
-          '<div><strong>查詢服務設定中：</strong>目前尚未開放線上查詢，請於服務時間洽本會服務人員。</div>';
+          '<span aria-hidden="true"></span><strong>查詢服務設定中</strong>';
         box.classList.remove("ragic-embed");
         box.innerHTML =
           '<div class="state-box" style="text-align:left;padding:32px 28px">' +
