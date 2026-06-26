@@ -53,7 +53,7 @@ window.SITE_CONFIG = {
      區塊可填：置頂公告、最新消息、法令訊息、公告訊息、檔案下載。
      --------------------------------------------------------- */
   content: {
-    url: "",
+    url: "ap16.ragic.com/bsma/site-admin/2",
     fields: {
       date:    "日期",
       section: "區塊",
