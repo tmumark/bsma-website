@@ -878,9 +878,8 @@ table.cases tbody tr:hover { background: var(--blue-light); }
   position: relative;
   isolation: isolate;
   background:
-    linear-gradient(90deg, rgba(5,16,27,.88) 0%, rgba(5,16,27,.76) 50%, rgba(5,16,27,.66) 100%),
-    linear-gradient(0deg, rgba(5,16,27,.42), rgba(5,16,27,.18)),
-    url("../assets/home-cover.jpg?v=20260626-cover") center 58% / cover no-repeat;
+    linear-gradient(90deg, rgba(5,16,27,.92) 0%, rgba(5,16,27,.78) 42%, rgba(5,16,27,.52) 100%),
+    url("../assets/footer-cover.jpg?v=20260626-footer2") center 43% / cover no-repeat;
   color: #d0dbe8;
   padding: 50px 0 0;
   margin-top: 60px;
@@ -892,8 +891,8 @@ table.cases tbody tr:hover { background: var(--blue-light); }
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(180deg, rgba(5,16,27,.22), rgba(5,16,27,.46)),
-    radial-gradient(circle at 82% 18%, rgba(255,255,255,.12), rgba(255,255,255,0) 28%);
+    linear-gradient(180deg, rgba(5,16,27,.08), rgba(5,16,27,.34)),
+    radial-gradient(circle at 82% 16%, rgba(255,255,255,.14), rgba(255,255,255,0) 32%);
   pointer-events: none;
   z-index: 0;
 }
@@ -906,6 +905,7 @@ table.cases tbody tr:hover { background: var(--blue-light); }
   grid-template-columns: 1.6fr 1fr 1fr;
   gap: 40px;
   padding-bottom: 36px;
+  text-shadow: 0 1px 2px rgba(0,0,0,.32);
 }
 .footer-cols h4 { color: #fff; font-size: 16px; margin: 0 0 16px; letter-spacing: 1px; }
 .footer-cols p { font-size: 14px; margin: 6px 0; }
