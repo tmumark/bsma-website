@@ -878,10 +878,10 @@ table.cases tbody tr:hover { background: var(--blue-light); }
   position: relative;
   isolation: isolate;
   background:
-    linear-gradient(0deg, rgba(5,16,27,.94), rgba(5,16,27,.90)),
-    linear-gradient(90deg, rgba(13,34,54,.98) 0%, rgba(13,34,54,.82) 56%, rgba(13,34,54,.62) 100%),
-    url("../assets/home-cover.jpg?v=20260626-cover") center 60% / cover no-repeat;
-  color: #b9c6d6;
+    linear-gradient(90deg, rgba(5,16,27,.88) 0%, rgba(5,16,27,.76) 50%, rgba(5,16,27,.66) 100%),
+    linear-gradient(0deg, rgba(5,16,27,.42), rgba(5,16,27,.18)),
+    url("../assets/home-cover.jpg?v=20260626-cover") center 58% / cover no-repeat;
+  color: #d0dbe8;
   padding: 50px 0 0;
   margin-top: 60px;
   border-top: 4px solid var(--gold);
@@ -891,7 +891,9 @@ table.cases tbody tr:hover { background: var(--blue-light); }
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, rgba(5,16,27,.28), rgba(5,16,27,0));
+  background:
+    linear-gradient(180deg, rgba(5,16,27,.22), rgba(5,16,27,.46)),
+    radial-gradient(circle at 82% 18%, rgba(255,255,255,.12), rgba(255,255,255,0) 28%);
   pointer-events: none;
   z-index: 0;
 }
@@ -909,21 +911,23 @@ table.cases tbody tr:hover { background: var(--blue-light); }
 .footer-cols p { font-size: 14px; margin: 6px 0; }
 .footer-cols ul { list-style: none; padding: 0; margin: 0; }
 .footer-cols ul li { margin: 8px 0; }
-.footer-cols a { color: #b9c6d6; font-size: 14px; }
+.footer-cols a { color: #d0dbe8; font-size: 14px; }
 .footer-cols a:hover { color: #fff; }
-.foot-brand { display: flex; gap: 12px; align-items: center; margin-bottom: 14px; }
+.foot-brand { display: flex; gap: 12px; align-items: center; margin-bottom: 18px; }
 .foot-brand .logo { width: 40px; height: 40px; color: #fff; }
 .foot-brand .logo-img {
-  width: 260px;
-  height: auto;
+  width: 320px;
+  height: 58px;
   max-width: 100%;
-  background: #fff;
+  background: transparent;
   border-radius: 0;
+  object-fit: contain;
+  object-position: left center;
 }
 .foot-brand strong { color: #fff; font-size: 18px; letter-spacing: 1px; }
 .footer-bottom {
   border-top: 1px solid rgba(255,255,255,.12);
-  background: rgba(5,16,27,.18);
+  background: rgba(5,16,27,.30);
   padding: 18px 0;
   font-size: 13px;
   text-align: center;

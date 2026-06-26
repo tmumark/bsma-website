@@ -12,6 +12,7 @@
   var page = document.body.getAttribute("data-page") || "";
 
   var LOGO = '<img class="logo logo-img" src="assets/logo-main.png?v=20260624-logo" alt="' + (cfg.orgName || "建築物安全管理協會") + '">';
+  var FOOTER_LOGO = '<img class="logo logo-img" src="assets/logo-footer.png?v=20260626-footer" alt="' + (cfg.orgName || "建築物安全管理協會") + '">';
 
   var NAV = [
     { id: "home",    label: "首頁",       href: "./" },
@@ -59,7 +60,7 @@
     return '<footer class="site-footer"><div class="container">' +
       '<div class="footer-cols">' +
         '<div>' +
-          '<div class="foot-brand">' + LOGO + '</div>' +
+          '<div class="foot-brand">' + FOOTER_LOGO + '</div>' +
           '<p>本會為依法設立、非以營利為目的之社會團體，提供建築物公共安全檢查申報、法令資訊、教育訓練、公益宣導與申報服務資訊。</p>' +
         '</div>' +
         '<div>' +
