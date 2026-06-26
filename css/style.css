@@ -916,8 +916,8 @@ table.cases tbody tr:hover { background: var(--blue-light); }
 .foot-brand { display: flex; gap: 12px; align-items: center; margin-bottom: 18px; }
 .foot-brand .logo { width: 40px; height: 40px; color: #fff; }
 .foot-brand .logo-img {
-  width: 320px;
-  height: 58px;
+  width: 384px;
+  height: 70px;
   max-width: 100%;
   background: transparent;
   border-radius: 0;
