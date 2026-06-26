@@ -73,10 +73,10 @@
 
 ```js
 ragic: {
-  url: "ap16.ragic.com/PicturesTest2026/-/5",
+  url: "ap16.ragic.com/bsma/audit-case-management/4",
   feature: "query",
   exactMatch: true,
-  showSheetName: false
+  showSheetName: true
 }
 ```
 
