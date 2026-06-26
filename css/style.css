@@ -1319,6 +1319,9 @@ table.cases tbody tr:hover { background: var(--blue-light); }
 .contact-grid > .card {
   height: 100%;
 }
+.contact-grid > .card + .card {
+  margin-top: 0;
+}
 .info-list { list-style: none; padding: 0; margin: 0; }
 .info-list li { display: flex; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--line); }
 .info-list .ic {
