@@ -155,13 +155,32 @@ img { max-width: 100%; display: block; }
 
 /* ---------- 麵包屑 / 頁首橫幅 ---------- */
 .page-banner {
-  background: var(--navy);
+  position: relative;
+  isolation: isolate;
+  min-height: 156px;
+  background:
+    linear-gradient(90deg, rgba(13,34,54,.94) 0%, rgba(13,34,54,.78) 45%, rgba(13,34,54,.45) 100%),
+    url("../assets/home-cover.jpg?v=20260626-cover") center 52% / cover no-repeat;
   color: #fff;
-  padding: 36px 0;
+  padding: 42px 0 40px;
   border-bottom: 4px solid var(--gold);
+  overflow: hidden;
 }
-.page-banner h1 { margin: 0 0 6px; font-size: 28px; letter-spacing: 1px; }
-.page-banner .crumb { font-size: 14px; color: #bcd2ec; }
+.page-banner::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 42%;
+  background: linear-gradient(0deg, rgba(13,34,54,.32), rgba(13,34,54,0));
+  z-index: 0;
+  pointer-events: none;
+}
+.page-banner .container {
+  position: relative;
+  z-index: 1;
+}
+.page-banner h1 { margin: 8px 0 0; font-size: 32px; letter-spacing: 1px; line-height: 1.32; }
+.page-banner .crumb { font-size: 14px; color: #d5e1ec; }
 .page-banner .crumb a { color: #bcd2ec; }
 .page-banner .crumb a:hover { color: #fff; }
 
@@ -856,11 +875,29 @@ table.cases tbody tr:hover { background: var(--blue-light); }
    頁尾
    ========================================================= */
 .site-footer {
-  background: var(--navy-dark);
+  position: relative;
+  isolation: isolate;
+  background:
+    linear-gradient(0deg, rgba(5,16,27,.94), rgba(5,16,27,.90)),
+    linear-gradient(90deg, rgba(13,34,54,.98) 0%, rgba(13,34,54,.82) 56%, rgba(13,34,54,.62) 100%),
+    url("../assets/home-cover.jpg?v=20260626-cover") center 60% / cover no-repeat;
   color: #b9c6d6;
   padding: 50px 0 0;
   margin-top: 60px;
   border-top: 4px solid var(--gold);
+  overflow: hidden;
+}
+.site-footer::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(5,16,27,.28), rgba(5,16,27,0));
+  pointer-events: none;
+  z-index: 0;
+}
+.site-footer .container {
+  position: relative;
+  z-index: 1;
 }
 .footer-cols {
   display: grid;
@@ -886,6 +923,7 @@ table.cases tbody tr:hover { background: var(--blue-light); }
 .foot-brand strong { color: #fff; font-size: 18px; letter-spacing: 1px; }
 .footer-bottom {
   border-top: 1px solid rgba(255,255,255,.12);
+  background: rgba(5,16,27,.18);
   padding: 18px 0;
   font-size: 13px;
   text-align: center;
@@ -917,6 +955,12 @@ table.cases tbody tr:hover { background: var(--blue-light); }
   .main-nav.open { max-height: 460px; }
   .main-nav ul { flex-direction: column; padding: 8px; gap: 2px; }
   .main-nav a { padding: 14px 16px; }
+  .page-banner {
+    min-height: 132px;
+    padding: 32px 0 30px;
+    background-position: 43% center;
+  }
+  .page-banner h1 { font-size: 28px; }
   .hero h1 { font-size: 30px; }
   .hero { padding: 56px 0; }
   .hero-proof dl div { grid-template-columns: 1fr; gap: 2px; }
