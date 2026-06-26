@@ -282,34 +282,75 @@ img { max-width: 100%; display: block; }
 }
 .section-head p { color: var(--text-soft); margin: 0; }
 
-/* ---------- 首頁：公會資訊入口 ---------- */
-.home-banner {
-  background: #fff;
-  border-bottom: 1px solid var(--line);
-  border-top: 1px solid #fff;
+/* ---------- 首頁：主視覺 ---------- */
+.home-hero {
+  position: relative;
+  isolation: isolate;
+  min-height: 360px;
+  color: #fff;
+  background:
+    linear-gradient(90deg, rgba(13,34,54,.92) 0%, rgba(13,34,54,.72) 38%, rgba(13,34,54,.30) 72%, rgba(13,34,54,.18) 100%),
+    url("../assets/home-cover.jpg?v=20260626-cover") center 48% / cover no-repeat;
+  border-bottom: 4px solid var(--gold);
+  overflow: hidden;
 }
-.home-banner-inner {
-  min-height: 138px;
+.home-hero::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 34%;
+  background: linear-gradient(0deg, rgba(13,34,54,.28), rgba(13,34,54,0));
+  z-index: 0;
+  pointer-events: none;
+}
+.home-hero-inner {
+  position: relative;
+  z-index: 1;
+  min-height: inherit;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-  padding-top: 26px;
-  padding-bottom: 26px;
+  padding-top: 60px;
+  padding-bottom: 56px;
 }
-.home-banner h1 {
-  margin: 0 0 8px;
-  color: var(--navy);
-  font-size: 31px;
+.home-hero-copy {
+  width: min(620px, 100%);
+}
+.home-hero-kicker {
+  display: inline-block;
+  margin-bottom: 12px;
+  color: var(--gold-light);
+  font-size: 15px;
+  font-weight: 700;
   letter-spacing: 1px;
-  line-height: 1.35;
-  padding-left: 16px;
-  border-left: 5px solid var(--gold);
 }
-.home-banner p {
+.home-hero h1 {
+  margin: 0 0 14px;
+  color: #fff;
+  font-size: 38px;
+  letter-spacing: 1px;
+  line-height: 1.28;
+}
+.home-hero p {
   margin: 0;
-  color: var(--text-soft);
-  font-size: 17px;
+  max-width: 560px;
+  color: #e5edf5;
+  font-size: 18px;
+}
+.home-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 26px;
+}
+.home-hero .btn-primary {
+  background: #fff;
+  color: var(--navy);
+  border-color: #fff;
+}
+.home-hero .btn-primary:hover {
+  background: var(--blue-light);
+  color: var(--navy-dark);
+  border-color: var(--blue-light);
 }
 .portal-layout {
   display: grid;
@@ -879,8 +920,19 @@ table.cases tbody tr:hover { background: var(--blue-light); }
   .hero h1 { font-size: 30px; }
   .hero { padding: 56px 0; }
   .hero-proof dl div { grid-template-columns: 1fr; gap: 2px; }
-  .home-banner-inner { align-items: flex-start; flex-direction: column; }
-  .home-banner h1 { font-size: 27px; }
+  .home-hero {
+    min-height: 330px;
+    background-position: 43% center;
+  }
+  .home-hero-inner {
+    align-items: center;
+    padding-top: 44px;
+    padding-bottom: 42px;
+  }
+  .home-hero h1 { font-size: 30px; }
+  .home-hero p { font-size: 16px; }
+  .home-hero-actions { flex-direction: column; align-items: flex-start; }
+  .home-hero-actions .btn { width: min(220px, 100%); }
   .service-links { grid-template-columns: 1fr; }
   .plain-news li { grid-template-columns: 1fr; gap: 4px; }
   .news-type { justify-self: start; }
