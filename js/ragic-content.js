@@ -213,6 +213,20 @@
     return el;
   }
 
+  function categoryClass(item) {
+    var text = ((item && item.type) || "") + " " + ((item && item.section) || "");
+    text = text.toLowerCase();
+    if (/外牆/.test(text)) return "cat-facade";
+    if (/透水|保水/.test(text)) return "cat-water";
+    if (/法令|法規|函釋|各縣市/.test(text)) return "cat-law";
+    if (/申報|集合住宅|文件|應備|檢查項目|流程|台北市|桃園市/.test(text)) return "cat-filing";
+    if (/檔案|表單|下載|附件/.test(text)) return "cat-file";
+    if (/教育|訓練|課程|活動/.test(text)) return "cat-event";
+    if (/公益|宣導|q&a|問答/.test(text)) return "cat-public";
+    if (/公告|網站服務|服務資訊/.test(text)) return "cat-notice";
+    return "cat-default";
+  }
+
   function createNewsItem(item) {
     var li = document.createElement("li");
     li.appendChild(createText("span", "news-date", normalizeDate(item.date)));
@@ -224,7 +238,7 @@
     }
     link.textContent = item.title;
     li.appendChild(link);
-    li.appendChild(createText("span", "news-type", item.type || item.section));
+    li.appendChild(createText("span", "news-type category-tag " + categoryClass(item), item.type || item.section));
     return li;
   }
 
@@ -274,7 +288,7 @@
       var date = document.createElement("td");
       date.textContent = normalizeDate(item.date);
       var type = document.createElement("td");
-      var badge = createText("span", "status s-pending", item.type || item.section);
+      var badge = createText("span", "status category-tag " + categoryClass(item), item.type || item.section);
       type.appendChild(badge);
       var title = document.createElement("td");
       var titleLink = document.createElement("a");
