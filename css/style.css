@@ -747,6 +747,53 @@ img { max-width: 100%; display: block; }
   line-height: 2;
   white-space: pre-line;
 }
+.announcement-attachments {
+  margin: 0 42px 30px;
+  padding: 22px 24px 24px;
+  background: #f7f9fb;
+  border: 1px solid #d8e0e8;
+  border-left: 4px solid var(--gold);
+}
+.announcement-attachments h3 {
+  margin: 0 0 14px;
+  color: var(--navy);
+  font-size: 18px;
+  line-height: 1.4;
+}
+.announcement-attachments ul {
+  display: grid;
+  gap: 10px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.announcement-attachments a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  min-height: 48px;
+  padding: 12px 14px;
+  color: var(--navy);
+  background: var(--white);
+  border: 1px solid #dce4ec;
+  font-weight: 700;
+  line-height: 1.5;
+}
+.announcement-attachments a:hover {
+  color: var(--blue);
+  border-color: #b7c7d8;
+  background: #fbfdff;
+}
+.announcement-attachments a::after {
+  content: "下載";
+  flex: 0 0 auto;
+  padding: 4px 10px;
+  color: var(--white);
+  background: var(--navy);
+  font-size: 13px;
+  font-weight: 700;
+}
 .announcement-detail-actions {
   display: flex;
   flex-wrap: wrap;
@@ -1217,6 +1264,9 @@ table.cases tbody tr:hover { background: var(--blue-light); }
   .announcement-detail-head { padding: 28px 22px 22px; }
   .announcement-detail-head h2 { font-size: 24px; }
   .announcement-detail-body { padding: 28px 22px; font-size: 15.5px; }
+  .announcement-attachments { margin: 0 22px 24px; padding: 18px; }
+  .announcement-attachments a { align-items: flex-start; flex-direction: column; gap: 8px; }
+  .announcement-attachments a::after { align-self: flex-start; }
   .announcement-detail-actions { padding: 0 22px 28px; flex-direction: column; }
   .announcement-detail-actions .btn { width: 100%; }
   .search-service-intro { gap: 22px; margin-bottom: 22px; }

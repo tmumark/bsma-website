@@ -36,49 +36,130 @@
     return (/^https?:\/\//i.test(sourceUrl) ? sourceUrl : "https://" + sourceUrl).split("?")[0].replace(/\/+$/, "");
   }
 
+  function sourceOrigin() {
+    var match = cleanSourceUrl().match(/^https?:\/\/[^/]+/i);
+    return match ? match[0] : "https://www.ragic.com";
+  }
+
+  function ragicAccountName() {
+    var path = cleanSourceUrl().replace(/^https?:\/\/[^/]+\//i, "");
+    return path.split("/")[0] || "";
+  }
+
+  function isRagicFileToken(text) {
+    return /^[^@\/\\\s]+@[^@\/\\]+\.[A-Za-z0-9]{2,8}$/i.test(String(text || "").trim());
+  }
+
+  function filenameFromRagicToken(text) {
+    var token = String(text || "").trim();
+    if (!isRagicFileToken(token)) return "";
+    var filename = token.split("@").slice(1).join("@");
+    try { filename = decodeURIComponent(filename); } catch (e) {}
+    return filename;
+  }
+
   function normalizeUrl(url) {
     if (!url) return "";
-    url = String(url).trim();
+    url = String(url).trim().replace(/&amp;/g, "&");
+    if (isRagicFileToken(url) && ragicAccountName()) {
+      return sourceOrigin() + "/sims/file.jsp?a=" + encodeURIComponent(ragicAccountName()) + "&f=" + encodeURIComponent(url);
+    }
     if (/^https?:\/\//i.test(url)) return url;
     if (/^\/\//.test(url)) return "https:" + url;
-    if (/^\//.test(url)) return cleanSourceUrl().match(/^https?:\/\/[^/]+/i)[0] + url;
+    if (/^\//.test(url)) return sourceOrigin() + url;
     if (/^mailto:|^tel:/i.test(url)) return url;
     return url;
   }
 
-  function normalizeAttachment(raw) {
-    if (raw == null) return "";
-    if (Array.isArray(raw)) {
-      for (var i = 0; i < raw.length; i += 1) {
-        var fromArray = normalizeAttachment(raw[i]);
-        if (fromArray) return fromArray;
-      }
-      return "";
+  function cleanAttachmentName(text) {
+    var value = String(text || "").replace(/<[^>]*>/g, " ").replace(/&nbsp;/g, " ");
+    var decoder = document.createElement("textarea");
+    decoder.innerHTML = value;
+    return decoder.value.replace(/\s+/g, " ").trim();
+  }
+
+  function filenameFromUrl(url, fallback) {
+    var clean = String(url || "").split("#")[0].split("?")[0];
+    var filename = clean.split("/").pop() || "";
+    try { filename = decodeURIComponent(filename); } catch (e) {}
+    return filename || fallback || "附件";
+  }
+
+  function normalizeAttachments(raw) {
+    var files = [];
+    var seen = {};
+    var urlKeys = ["url", "href", "link", "downloadUrl", "download_url", "file", "path"];
+    var nameKeys = ["name", "filename", "fileName", "title", "label"];
+
+    function addFile(url, name) {
+      var original = String(url || "").trim();
+      var normalized = normalizeUrl(url);
+      if (!normalized || seen[normalized]) return;
+      var label = cleanAttachmentName(name) || filenameFromRagicToken(original) || filenameFromUrl(normalized, "附件 " + (files.length + 1));
+      seen[normalized] = true;
+      files.push({ url: normalized, name: label });
     }
-    if (typeof raw === "object") {
-      var keys = ["url", "href", "link", "downloadUrl", "download_url", "file", "path"];
-      for (var k = 0; k < keys.length; k += 1) {
-        if (raw[keys[k]]) {
-          var fromKey = normalizeAttachment(raw[keys[k]]);
-          if (fromKey) return fromKey;
-        }
+
+    function collect(item, hint) {
+      if (item == null) return;
+
+      if (Array.isArray(item)) {
+        item.forEach(function (entry) {
+          collect(entry, hint);
+        });
+        return;
       }
-      return "";
+
+      if (typeof item === "object") {
+        var name = hint || "";
+        nameKeys.forEach(function (key) {
+          if (item[key] && !name) name = item[key];
+        });
+        urlKeys.forEach(function (key) {
+          if (item[key]) addFile(item[key], name);
+        });
+        Object.keys(item).forEach(function (key) {
+          if (urlKeys.indexOf(key) === -1 && nameKeys.indexOf(key) === -1) collect(item[key], name);
+        });
+        return;
+      }
+
+      var text = String(item).trim();
+      if (!text) return;
+
+      if (/^[\[{]/.test(text)) {
+        try {
+          collect(JSON.parse(text), hint);
+          return;
+        } catch (e) {}
+      }
+
+      var foundHtmlLink = false;
+      text.replace(/<a\b[^>]*href=["']([^"']+)["'][^>]*>(.*?)<\/a>/gi, function (_, href, label) {
+        foundHtmlLink = true;
+        addFile(href, label || hint);
+        return "";
+      });
+      text.replace(/href=["']([^"']+)["']/gi, function (_, href) {
+        foundHtmlLink = true;
+        addFile(href, hint);
+        return "";
+      });
+      if (foundHtmlLink) return;
+
+      var matched = false;
+      text.replace(/(https?:\/\/[^\s"'<>，,]+|\/\/[^\s"'<>，,]+|\/[^\s"'<>，,]+)/gi, function (url) {
+        matched = true;
+        addFile(url, hint);
+        return "";
+      });
+      if (matched) return;
+
+      if (/\.(pdf|docx?|xlsx?|pptx?|jpg|jpeg|png|zip)(\?.*)?$/i.test(text)) addFile(text, hint);
     }
-    var text = String(raw).trim();
-    if (!text) return "";
-    try {
-      var parsed = JSON.parse(text);
-      var fromJson = normalizeAttachment(parsed);
-      if (fromJson) return fromJson;
-    } catch (e) {}
-    var hrefMatch = text.match(/href=["']([^"']+)["']/i);
-    if (hrefMatch) return normalizeUrl(hrefMatch[1]);
-    var urlMatch = text.match(/https?:\/\/[^\s"'<>]+/i);
-    if (urlMatch) return normalizeUrl(urlMatch[0]);
-    var pathMatch = text.match(/\/[^\s"'<>]+/);
-    if (pathMatch) return normalizeUrl(pathMatch[0]);
-    return "";
+
+    collect(raw, "");
+    return files;
   }
 
   function jsonp(url) {
@@ -134,7 +215,7 @@
     var title = value(row, fieldNames.title) || value(row, "_index_title_") || "公告內容";
     var summary = value(row, fieldNames.summary);
     var content = value(row, fieldNames.content);
-    var attachmentUrl = normalizeAttachment(row[fieldNames.attachment]);
+    var attachments = normalizeAttachments(row[fieldNames.attachment]);
     var linkUrl = normalizeUrl(value(row, fieldNames.url));
 
     document.title = title + "｜建築物安全管理協會";
@@ -154,14 +235,24 @@
     body.textContent = content || "本公告尚未填寫詳細內容。";
     container.appendChild(body);
 
-    var actions = createEl("div", "announcement-detail-actions");
-    if (attachmentUrl) {
-      var attachment = createEl("a", "btn btn-primary", "下載附件");
-      attachment.href = attachmentUrl;
-      attachment.target = "_blank";
-      attachment.rel = "noopener";
-      actions.appendChild(attachment);
+    if (attachments.length) {
+      var attachmentBlock = createEl("section", "announcement-attachments");
+      attachmentBlock.appendChild(createEl("h3", "", "附件下載"));
+      var attachmentList = document.createElement("ul");
+      attachments.forEach(function (file, index) {
+        var item = document.createElement("li");
+        var link = createEl("a", "", file.name || "附件 " + (index + 1));
+        link.href = file.url;
+        link.target = "_blank";
+        link.rel = "noopener";
+        item.appendChild(link);
+        attachmentList.appendChild(item);
+      });
+      attachmentBlock.appendChild(attachmentList);
+      container.appendChild(attachmentBlock);
     }
+
+    var actions = createEl("div", "announcement-detail-actions");
     if (linkUrl && !/^(news|announcements)\.html$/i.test(linkUrl)) {
       var related = createEl("a", "btn btn-outline", "相關連結");
       related.href = linkUrl;

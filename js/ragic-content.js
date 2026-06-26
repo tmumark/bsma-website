@@ -38,7 +38,10 @@
 
   function normalizeUrl(url) {
     if (!url) return "";
-    url = String(url).trim();
+    url = String(url).trim().replace(/&amp;/g, "&");
+    if (isRagicFileToken(url) && getRagicAccountName()) {
+      return getSourceOrigin() + "/sims/file.jsp?a=" + encodeURIComponent(getRagicAccountName()) + "&f=" + encodeURIComponent(url);
+    }
     if (/^https?:\/\//i.test(url)) return url;
     if (/^\/\//.test(url)) return "https:" + url;
     if (/^\//.test(url)) return getSourceOrigin() + url;
@@ -50,6 +53,16 @@
     var cleanUrl = /^https?:\/\//i.test(sourceUrl) ? sourceUrl : "https://" + sourceUrl;
     var match = cleanUrl.match(/^https?:\/\/[^/]+/i);
     return match ? match[0] : "";
+  }
+
+  function getRagicAccountName() {
+    var cleanUrl = /^https?:\/\//i.test(sourceUrl) ? sourceUrl : "https://" + sourceUrl;
+    var path = cleanUrl.split("?")[0].replace(/^https?:\/\/[^/]+\//i, "");
+    return path.split("/")[0] || "";
+  }
+
+  function isRagicFileToken(text) {
+    return /^[^@\/\\\s]+@[^@\/\\]+\.[A-Za-z0-9]{2,8}$/i.test(String(text || "").trim());
   }
 
   function buildDetailUrl(row, fallbackId) {
@@ -99,6 +112,8 @@
     if (urlMatch) return normalizeUrl(urlMatch[0]);
     var pathMatch = text.match(/\/[^\s"'<>]+/);
     if (pathMatch) return normalizeUrl(pathMatch[0]);
+    if (isRagicFileToken(text)) return normalizeUrl(text);
+    if (/\.(pdf|docx?|xlsx?|pptx?|jpg|jpeg|png|zip)(\?.*)?$/i.test(text)) return normalizeUrl(text);
     return "";
   }
 
@@ -128,7 +143,7 @@
         summary: value(row, fieldNames.summary),
         detailUrl: detailUrl,
         url: linkUrl,
-        actionUrl: attachmentUrl || detailUrl || linkUrl,
+        actionUrl: detailUrl || attachmentUrl || linkUrl,
         hasAttachment: !!attachmentUrl,
         pinned: isYes(value(row, fieldNames.pinned)),
         hidden: isHidden(value(row, fieldNames.visible)),
@@ -259,7 +274,7 @@
       var linkCell = document.createElement("td");
       var link = document.createElement("a");
       link.href = item.actionUrl || "#";
-      link.textContent = item.actionUrl ? (item.hasAttachment ? "下載" : "開啟") : "待上傳";
+      link.textContent = item.actionUrl ? (item.detailUrl ? "開啟" : (item.hasAttachment ? "下載" : "開啟")) : "待上傳";
       if (/^https?:\/\//i.test(item.actionUrl)) {
         link.target = "_blank";
         link.rel = "noopener";
