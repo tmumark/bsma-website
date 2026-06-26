@@ -52,7 +52,6 @@
 建安協會網站/
 ├─ index.html              首頁
 ├─ about.html              關於本會、組織分工、查核流程
-├─ news.html               舊網址轉址到公告訊息
 ├─ announcements.html      公告訊息與附件下載
 ├─ search.html             案件查詢（RAGIC 正式頁）
 ├─ search-sheet.html       舊展示版，可保留備用
