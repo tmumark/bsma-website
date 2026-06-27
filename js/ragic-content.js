@@ -272,6 +272,13 @@
     if (limit > 0) selected = selected.slice(0, limit);
     var tbody = table.querySelector("tbody");
     if (!tbody) return;
+    var labels = Array.prototype.map.call(table.querySelectorAll("thead th"), function (th) {
+      return th.textContent.trim();
+    });
+    function applyLabel(cell, index) {
+      if (labels[index]) cell.setAttribute("data-label", labels[index]);
+      return cell;
+    }
     tbody.innerHTML = "";
     if (!selected.length) {
       var emptyRow = document.createElement("tr");
@@ -308,10 +315,10 @@
         link.rel = "noopener";
       }
       linkCell.appendChild(link);
-      tr.appendChild(date);
-      tr.appendChild(type);
-      tr.appendChild(title);
-      tr.appendChild(linkCell);
+      tr.appendChild(applyLabel(date, 0));
+      tr.appendChild(applyLabel(type, 1));
+      tr.appendChild(applyLabel(title, 2));
+      tr.appendChild(applyLabel(linkCell, 3));
       tbody.appendChild(tr);
     });
   }

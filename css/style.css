@@ -1465,6 +1465,84 @@ table.cases tbody tr:hover { background: var(--blue-light); }
   .news-type { justify-self: start; }
   .section { padding: 44px 0; }
   .compact-section { padding: 30px 0; }
+  .announcement-list-card {
+    padding: 0;
+    background: transparent;
+    border: 0;
+  }
+  .announcement-list-scroll {
+    overflow: visible;
+    border: 0;
+  }
+  table.announcement-list-table {
+    display: block;
+    min-width: 0;
+    background: transparent;
+    border-collapse: separate;
+  }
+  table.announcement-list-table thead {
+    display: none;
+  }
+  table.announcement-list-table tbody,
+  table.announcement-list-table tr,
+  table.announcement-list-table td {
+    display: block;
+    width: 100%;
+  }
+  table.announcement-list-table tbody tr {
+    margin: 0 0 14px;
+    padding: 16px;
+    background: #fff;
+    border: 1px solid var(--line);
+    box-shadow: 0 8px 18px rgba(8, 31, 51, .06);
+  }
+  table.announcement-list-table tbody tr:nth-child(even),
+  table.announcement-list-table tbody tr:hover {
+    background: #fff;
+  }
+  table.announcement-list-table tbody td {
+    padding: 0;
+    border-bottom: 0;
+    overflow-wrap: anywhere;
+  }
+  table.announcement-list-table tbody td + td {
+    margin-top: 10px;
+  }
+  table.announcement-list-table tbody td::before {
+    content: attr(data-label);
+    display: block;
+    margin-bottom: 4px;
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 700;
+  }
+  table.announcement-list-table tbody td[data-label=""]::before {
+    display: none;
+  }
+  table.announcement-list-table tbody td:nth-child(1) {
+    color: var(--text-soft);
+    font-size: 14px;
+  }
+  table.announcement-list-table tbody td:nth-child(3) a {
+    display: block;
+    color: var(--navy);
+    font-size: 17px;
+    font-weight: 700;
+    line-height: 1.55;
+  }
+  table.announcement-list-table tbody td:nth-child(4) a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 38px;
+    padding: 8px 14px;
+    border: 1px solid var(--line);
+    color: var(--navy);
+    font-weight: 700;
+  }
+  table.announcement-list-table tbody td.table-empty {
+    padding: 24px 16px;
+    text-align: center;
+  }
   .announcement-detail-head { padding: 28px 22px 22px; }
   .announcement-detail-head h2 { font-size: 24px; }
   .announcement-detail-body { padding: 28px 22px; font-size: 15.5px; }
