@@ -283,7 +283,10 @@
           headers.map(function (cell) { return "<th>" + renderInlineMarkdown(cell) + "</th>"; }).join("") +
           "</tr></thead><tbody>" +
           rows.map(function (rowCells) {
-            return "<tr>" + rowCells.map(function (cell) { return "<td>" + renderInlineMarkdown(cell) + "</td>"; }).join("") + "</tr>";
+            return "<tr>" + rowCells.map(function (cell, index) {
+              var label = headers[index] || "";
+              return '<td data-label="' + escapeAttr(label) + '">' + renderInlineMarkdown(cell) + "</td>";
+            }).join("") + "</tr>";
           }).join("") +
           "</tbody></table></div>"
         );
