@@ -14,7 +14,7 @@
   <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png?v=20260626-round-logo" />
   <link rel="icon" type="image/png" href="assets/favicon.png?v=20260626-round-logo" />
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png?v=20260626-round-logo" />
-  <link rel="stylesheet" href="css/style.css?v=20260629-ragic-compact" />
+  <link rel="stylesheet" href="css/style.css?v=20260629-query-clean" />
 </head>
 <body data-page="search">
   <div id="site-header"></div>
@@ -28,42 +28,19 @@
 
   <main class="section search-service-section">
     <div class="container">
-      <div class="search-service-intro">
-        <div>
-          <span class="service-kicker">線上查詢服務</span>
-          <h2>建築物公共安全申報案件查詢</h2>
-          <p>本頁連接本會案件資料庫，請依本會提供之查詢資料完整輸入，以精確比對方式查詢案件狀態。</p>
-        </div>
-        <dl class="service-facts" aria-label="查詢服務資訊">
-          <div>
-            <dt>資料來源</dt>
-            <dd>本會案件資料庫</dd>
-          </div>
-          <div>
-            <dt>查詢方式</dt>
-            <dd>完整條件比對</dd>
-          </div>
-          <div>
-            <dt>服務時間</dt>
-            <dd>線上查詢全天開放</dd>
-          </div>
-        </dl>
-      </div>
-
       <!-- 查詢嵌入區 -->
       <section class="search-query-shell" aria-label="案件查詢表單">
         <div class="search-query-toolbar">
           <div>
-            <span>案件資料庫</span>
-            <strong>Ragic 精確查詢</strong>
+            <span>線上查詢服務</span>
+            <strong>建築物公共安全申報案件查詢</strong>
           </div>
           <div id="modeBanner" class="search-status"></div>
         </div>
 
         <div class="ragic-embed" id="ragicEmbed">
           <div id="ragic_webview"></div>
-          <noscript>Please enable JavaScript to view the <a href="https://www.ragic.com/?ref_noscript">Online database form by Ragic.</a></noscript>
-          <a href="https://www.ragic.com" id="ragic-link">online database form by <span class="logo-ragic">Ragic</span></a>
+          <noscript>請啟用 JavaScript 以使用線上查詢服務。</noscript>
         </div>
       </section>
 
@@ -104,7 +81,7 @@
         banner.innerHTML =
           '<span aria-hidden="true"></span><strong>資料庫已連線</strong>';
 
-        /* 設定 Ragic 嵌入所需的全域變數（等同官方嵌入碼） */
+        /* 設定查詢嵌入所需的全域變數 */
         window.ragic_url        = url;
         window.ragic_feature    = r.feature || "query";
         window.ragic_embedtype  = "";
@@ -113,7 +90,7 @@
         window.applyDefaultView = false;
         window.showSheetName    = (r.showSheetName !== false);
 
-        /* 載入 Ragic 嵌入腳本（依 url 自動取得伺服器主機，如 ap16.ragic.com） */
+        /* 載入查詢嵌入腳本 */
         var host = url.split("/")[0];
         var rq = document.createElement("script");
         rq.type = "text/javascript";

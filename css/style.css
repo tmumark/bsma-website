@@ -980,7 +980,7 @@ img { max-width: 100%; display: block; }
 /* =========================================================
    案件查詢頁
    ========================================================= */
-/* 資料來源切換器（Google Sheet 版 / Ragic 版 比較用） */
+/* 資料來源切換器 */
 .source-switch {
   display: inline-flex;
   background: var(--white);
@@ -1003,7 +1003,7 @@ img { max-width: 100%; display: block; }
 .source-switch a.current { background: var(--blue); color: #fff; }
 .source-switch .sw-label { padding: 8px 6px 8px 12px; color: var(--text-soft); font-size: 13.5px; align-self: center; }
 
-/* Ragic 嵌入容器 */
+/* 查詢嵌入容器 */
 .search-service-section {
   background:
     linear-gradient(180deg, #f3f6f9 0%, #f7f9fb 54%, #ffffff 100%);
@@ -1016,6 +1016,9 @@ img { max-width: 100%; display: block; }
   padding: 0 0 28px;
   margin-bottom: 28px;
   border-bottom: 1px solid #d9e0e8;
+}
+.search-service-intro[hidden] {
+  display: none;
 }
 .service-kicker {
   display: block;
@@ -1115,6 +1118,7 @@ img { max-width: 100%; display: block; }
 .search-status.is-paused span { background: var(--gold-dark); }
 .ragic-embed {
   --ragic-crop-top: 92px;
+  position: relative;
   background: var(--white);
   border: 0;
   border-radius: 0;
@@ -1126,12 +1130,25 @@ img { max-width: 100%; display: block; }
 .ragic-embed #ragic_webview {
   margin-top: calc(var(--ragic-crop-top) * -1);
 }
+#ragic-link {
+  display: none !important;
+}
 .ragic-embed iframe {
   width: 100%;
   min-height: calc(620px + var(--ragic-crop-top));
   border: 0;
   border-radius: 0;
   display: block;
+}
+.ragic-embed::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 128px;
+  background: linear-gradient(180deg, rgba(255,255,255,0) 0%, #fff 34%, #fff 100%);
+  pointer-events: none;
 }
 .search-guidance {
   display: grid;
